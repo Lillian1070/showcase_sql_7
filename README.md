@@ -76,7 +76,7 @@ WITH prev_trans AS (
 prev_time_diff AS (
   SELECT 
     *,
-    (transaction_timestamp	- prev_transaction) AS time_diff
+    (transaction_timestamp - prev_transaction) AS time_diff
   FROM prev_trans
 )
 ```
