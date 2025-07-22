@@ -1,10 +1,16 @@
-# Repeated Payments
+# [SQL] Calculating Repeated Payments
 
-[link](https://datalemur.com/questions/repeated-payments)
+_This SQL practice is based on a problem from [DataLemur](https://datalemur.com/questions/repeated-payments) and is intended for personal learning and educational purposes._
+
+- **Objective**: Calculate the 3-day rolling average of tweets for each user.
+- **Practice Purpose**: Self-learning and reinforcement of SQL data cleaning, aggregation, joins, subqueries, and window functions.
+- **Outline**:
+    - [**Practice**](#section-1) (practice problem and query output)
+    - [**Solution**](#section-2) (step-by-step explanation)
+    - [**Query Optimization**](#section-3)
 
 
-
-## Practice 
+## <a name="section-1"></a>🧪 Practice
 
 Sometimes, payment transactions are repeated by accident; it could be due to user error, API failure or a retry error that causes a credit card to be charged twice.
 
@@ -17,27 +23,49 @@ __Assumptions:__
 
 __Table:__ `transactions`
 
-transaction_id	merchant_id	credit_card_id	amount	transaction_timestamp
-1	101	1	100	09/25/2022 12:00:00
-2	101	1	100	09/25/2022 12:08:00
-3	101	1	100	09/25/2022 12:28:00
-4	102	2	300	09/25/2022 12:00:00
-6	102	2	400	09/25/2022 14:00:00
-
+| transaction_id | merchant_id | credit_card_id | amount | transaction_timestamp | 
+| -------------- | ----------- | -------------- | ------ | --------------------- | 
+| 1 | 101 | 1 | 100 | 09/25/2022 12:00:00 | 
+| 2 | 101 | 1 | 100 | 09/25/2022 12:08:00 | 
+| 3 | 101 | 1 | 100 | 09/25/2022 12:28:00 | 
+| 4 | 102 | 2 | 300 | 09/25/2022 12:00:00 | 
+| 6 | 102 | 2 | 400 | 09/25/2022 14:00:00 | 
+| ... | ... | ... | ... | ... | 
 
 ### Expected_Output: 
 
-payment_count
-1
+| payment_count |
+| ------------- |
+| 1 |
 
 
 
-## My PostgreSQL Query
+## <a name="section-2"></a>🧠 Solution 
+
+*This section outlines my thought process for solving the problem.*
+
+### Step 1: Identify the Required Fields 
+
+
+
+### Step 2: Create a Temporary Table `` to xxx
+
+
+
+### Step 3: Calculate the xxx
+
+
 
 - Using `LAG()`
 - Using `INTERVAL`
 
 
+
+
+
+#### Final Syntax and Output using PostgreSQL
+
+##### * Syntax
 
 ```sql
 WITH prev_trans AS (
@@ -63,3 +91,36 @@ SELECT COUNT(transaction_id) AS repeated_payment_count
 FROM prev_time_diff
 WHERE time_diff <= INTERVAL '10 minutes';
 ```
+
+
+##### * Output
+
+| payment_count |
+| ------------- |
+| 1 |
+
+
+## <a name="section-3"></a>🛠️ Query Optimization using PostgreSQL
+
+*Note: This section was last updated on 07/18/2025.*
+
+
+
+
+
+```sql
+SELECT    
+  user_id,    
+  tweet_date,   
+  ROUND(
+    AVG(tweet_count) OVER (
+      PARTITION BY user_id
+      ORDER BY tweet_date     
+      ROWS BETWEEN 2 PRECEDING AND CURRENT ROW
+    ),
+  2) AS rolling_avg_3d
+FROM tweets;
+```
+
+_💬 I’d love to hear your thoughts! If you have any suggestions or questions, please feel free to reach out._
+
