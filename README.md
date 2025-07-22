@@ -5,8 +5,8 @@ _This SQL practice is based on a problem from [DataLemur](https://datalemur.com/
 - **Objective**: Calculate the count of repeated payments.
 - **Practice Purpose**: Self-learning and reinforcement of SQL data cleaning, aggregation, subqueries, and window functions.
 - **Outline**:
-    - [**Practice**](#section-1) (practice problem and query output)
-    - [**Solution**](#section-2) (step-by-step explanation)
+    - [**Practice**](#section-1) 
+    - [**Solution**](#section-2) 
     - [**Query Optimization**](#section-3)
 
 
