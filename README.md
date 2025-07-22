@@ -60,9 +60,10 @@ WITH prev_trans AS (
     credit_card_id,
     amount,
     transaction_timestamp,
-    LAG(transaction_timestamp) OVER 
-      (PARTITION BY merchant_id, credit_card_id, amount 
-        ORDER BY transaction_timestamp) AS prev_transaction
+    LAG(transaction_timestamp) OVER (
+      PARTITION BY merchant_id, credit_card_id, amount 
+      ORDER BY transaction_timestamp
+    ) AS prev_transaction
   FROM transactions
 ),
 ```
@@ -105,9 +106,10 @@ WITH prev_trans AS (
     credit_card_id,
     amount,
     transaction_timestamp,
-    LAG(transaction_timestamp) OVER 
-      (PARTITION BY merchant_id, credit_card_id, amount 
-        ORDER BY transaction_timestamp) AS prev_transaction
+    LAG(transaction_timestamp) OVER (
+      PARTITION BY merchant_id, credit_card_id, amount 
+      ORDER BY transaction_timestamp
+    ) AS prev_transaction
   FROM transactions
 ),
 prev_time_diff AS (
