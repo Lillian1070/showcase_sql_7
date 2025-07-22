@@ -168,7 +168,7 @@ WHERE time_diff <= INTERVAL '10 minutes';
 
 | payment_count |
 | ------------- |
-| 1 |
+| 4 |
 
 
 ## <a name="section-3"></a>🛠️ Query Optimization using PostgreSQL
