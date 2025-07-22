@@ -2,7 +2,7 @@
 
 _This SQL practice is based on a problem from [DataLemur](https://datalemur.com/questions/repeated-payments) and is intended for personal learning and educational purposes._
 
-- **Objective**: Calculate the 3-day rolling average of tweets for each user.
+- **Objective**: Calculate the count of repeated payments.
 - **Practice Purpose**: Self-learning and reinforcement of SQL data cleaning, aggregation, joins, subqueries, and window functions.
 - **Outline**:
     - [**Practice**](#section-1) (practice problem and query output)
@@ -14,7 +14,7 @@ _This SQL practice is based on a problem from [DataLemur](https://datalemur.com/
 
 Sometimes, payment transactions are repeated by accident; it could be due to user error, API failure or a retry error that causes a credit card to be charged twice.
 
-Using the transactions table, identify any payments made at the same merchant with the same credit card for the same amount within 10 minutes of each other. Count such repeated payments.
+Using the transactions table, identify any payments made at the same merchant with the same credit card for the same amount __within 10 minutes__ of each other. Count such repeated payments.
 
 __Assumptions:__
 
@@ -48,15 +48,41 @@ __Table:__ `transactions`
 
 
 
-### Step 2: Create a Temporary Table `` to xxx
+### Step 2a: Create a Temporary Table `prev_trans` to xxx
+
+- Pull the previous same-amount payment to the same merchant made with the same card, using [`LAG()`](https://www.geeksforgeeks.org/sql/sql-server-lag-function-overview/).
+
+```sql
+WITH prev_trans AS (
+  SELECT
+    transaction_id,
+    merchant_id,
+    credit_card_id,
+    amount,
+    transaction_timestamp,
+    LAG(transaction_timestamp) OVER 
+      (PARTITION BY merchant_id, credit_card_id, amount 
+        ORDER BY transaction_timestamp) AS prev_transaction
+  FROM transactions
+),
+```
 
 
+### Step 2b: Create a Temporary Table `prev_time_diff` 
 
-### Step 3: Calculate the xxx
+- Calculate time between repeated same-amount payments to the same merchant with the same card.
 
+```sql
+prev_time_diff AS (
+  SELECT 
+    *,
+    (transaction_timestamp	- prev_transaction) AS time_diff
+  FROM prev_trans
+)
+```
 
+### Step 3: Calculate the Count of Repeated Payment 
 
-- Using `LAG()`
 - Using `INTERVAL`
 
 
