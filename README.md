@@ -48,8 +48,10 @@ __Table:__ `transactions`
 
 To create the result table with the count of repeated payments, I need to identify:
 
-- When the previous payment was made (see temp table `prev_trans`)
-- The time difference between the current and previous payments, and whether it occurred within 10 minutes (see temp table `prev_time_diff`)
+- When the previous payment of the same amount, at the same merchant, using the same card, was made (see temp table `prev_trans`)
+- The time difference between the current and previous payments (see temp table `prev_time_diff`)
+- Whether the repeated payment occurred within 10 minutes (see final query)
+
 
 ### Step 2a: Create a Temporary Table `prev_trans` to Retrieve Previous Payment
 
