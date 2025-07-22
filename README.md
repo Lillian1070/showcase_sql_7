@@ -46,10 +46,10 @@ __Table:__ `transactions`
 
 ### Step 1: Identify the Required Fields 
 
-To create the result table with the count of repeated payments, I need to find out the following info:
+To create the result table with the count of repeated payments, I need to identify:
 
-- When was the previous payment made? (see temp table `prev_trans`)
-- What was the duration between these payments, and did it happen within 10 minutes? (see temp table `prev_time_diff`)
+- When the previous payment was made (see temp table `prev_trans`)
+- The time difference between the current and previous payments, and whether it occurred within 10 minutes (see temp table `prev_time_diff`)
 
 ### Step 2a: Create a Temporary Table `prev_trans` to Retrieve Previous Payment
 
