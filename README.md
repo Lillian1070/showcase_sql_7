@@ -71,7 +71,7 @@ WITH prev_trans AS (
 
 ### Step 2b: Create a Temporary Table `prev_time_diff` 
 
-- Calculate time between repeated same-amount payments to the same merchant with the same card.
+- Using subtraction to calculate time between repeated same-amount payments to the same merchant with the same card.
 
 ```sql
 prev_time_diff AS (
