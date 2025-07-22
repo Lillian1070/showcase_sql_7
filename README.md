@@ -1,9 +1,9 @@
-# [SQL] Calculating Repeated Payments
+# [SQL] Calculating the Count of Repeated Payments
 
 _This SQL practice is based on a problem from [DataLemur](https://datalemur.com/questions/repeated-payments) and is intended for personal learning and educational purposes._
 
 - **Objective**: Calculate the count of repeated payments.
-- **Practice Purpose**: Self-learning and reinforcement of SQL data cleaning, aggregation, joins, subqueries, and window functions.
+- **Practice Purpose**: Self-learning and reinforcement of SQL data cleaning, aggregation, subqueries, and window functions.
 - **Outline**:
     - [**Practice**](#section-1) (practice problem and query output)
     - [**Solution**](#section-2) (step-by-step explanation)
@@ -46,11 +46,14 @@ __Table:__ `transactions`
 
 ### Step 1: Identify the Required Fields 
 
+To create the result table with the count of repeated payments, I need to find out the following info:
 
+- When was the previous payment made? (see temp table `prev_trans`)
+- What was the duration between these payments, and did it happen within 10 minutes? (see temp table `prev_time_diff`)
 
-### Step 2a: Create a Temporary Table `prev_trans` to xxx
+### Step 2a: Create a Temporary Table `prev_trans` to Retrieve Previous Payment
 
-- Using [`LAG()`](https://www.geeksforgeeks.org/sql/sql-server-lag-function-overview/) to pull the previous same-amount payment to the same merchant made with the same card.
+- Use [`LAG()`](https://www.geeksforgeeks.org/sql/sql-server-lag-function-overview/) to pull the previous same-amount payment to the same merchant made with the same card.
 
 ```sql
 WITH prev_trans AS (
@@ -69,9 +72,9 @@ WITH prev_trans AS (
 ```
 
 
-### Step 2b: Create a Temporary Table `prev_time_diff` 
+### Step 2b: Create a Temporary Table `prev_time_diff` to Calculate Time Difference 
 
-- Using subtraction to calculate time between repeated same-amount payments to the same merchant with the same card.
+- Calculate the time difference between repeated same-amount payments to the same merchant with the same card.
 
 ```sql
 prev_time_diff AS (
@@ -82,10 +85,10 @@ prev_time_diff AS (
 )
 ```
 
-### Step 3: Calculate the Count of Repeated Payment 
+### Step 3: Calculate the Count of Repeated Payments 
 
-- Using [`INTERVAL`](https://hightouch.com/sql-dictionary/sql-interval) to filter for payments where the previous one occurred within 10 minutes
-- Using `COUNT()` to calculate the number of repeated payments
+- Filter payments where the previous one occurred within 10 minutes using [`INTERVAL`](https://hightouch.com/sql-dictionary/sql-interval).
+- Calculate the number of repeated payments using `COUNT()`.
 
 ```sql
 SELECT COUNT(transaction_id) AS repeated_payment_count 
@@ -136,8 +139,7 @@ WHERE time_diff <= INTERVAL '10 minutes';
 
 *Note: This section was last updated on 07/22/2025.*
 
-Upon reviewing my previous query, I realized it can be simplified into a single query without using additional CTEs.
-
+Upon review, I realized the query can be simplified into a single statement without using extra CTEs.
 
 ```sql
 SELECT COUNT(*) AS repeated_payment_count
