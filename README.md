@@ -50,7 +50,7 @@ __Table:__ `transactions`
 
 ### Step 2a: Create a Temporary Table `prev_trans` to xxx
 
-- Pull the previous same-amount payment to the same merchant made with the same card, using [`LAG()`](https://www.geeksforgeeks.org/sql/sql-server-lag-function-overview/).
+- Using [`LAG()`](https://www.geeksforgeeks.org/sql/sql-server-lag-function-overview/) to pull the previous same-amount payment to the same merchant made with the same card.
 
 ```sql
 WITH prev_trans AS (
