@@ -83,10 +83,14 @@ prev_time_diff AS (
 
 ### Step 3: Calculate the Count of Repeated Payment 
 
-- Using `INTERVAL`
+- Using [`INTERVAL`](https://hightouch.com/sql-dictionary/sql-interval) to filter for payments where the previous one occurred within 10 minutes
+- Using `COUNT()` to calculate the number of repeated payments
 
-
-
+```sql
+SELECT COUNT(transaction_id) AS repeated_payment_count 
+FROM prev_time_diff
+WHERE time_diff <= INTERVAL '10 minutes';
+```
 
 
 #### Final Syntax and Output using PostgreSQL
@@ -128,24 +132,23 @@ WHERE time_diff <= INTERVAL '10 minutes';
 
 ## <a name="section-3"></a>🛠️ Query Optimization using PostgreSQL
 
-*Note: This section was last updated on 07/18/2025.*
+*Note: This section was last updated on 07/22/2025.*
 
-
-
+Upon reviewing my previous query, I realized it can be simplified into a single query without using additional CTEs.
 
 
 ```sql
-SELECT    
-  user_id,    
-  tweet_date,   
-  ROUND(
-    AVG(tweet_count) OVER (
-      PARTITION BY user_id
-      ORDER BY tweet_date     
-      ROWS BETWEEN 2 PRECEDING AND CURRENT ROW
-    ),
-  2) AS rolling_avg_3d
-FROM tweets;
+SELECT COUNT(*) AS repeated_payment_count
+FROM (
+  SELECT 
+    transaction_timestamp,
+    LAG(transaction_timestamp) OVER (
+      PARTITION BY merchant_id, credit_card_id, amount 
+      ORDER BY transaction_timestamp
+    ) AS prev_transaction
+  FROM transactions
+) t
+WHERE transaction_timestamp - prev_transaction <= INTERVAL '10 minutes';
 ```
 
 _💬 I’d love to hear your thoughts! If you have any suggestions or questions, please feel free to reach out._
